@@ -36,22 +36,61 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
         //
+ 
+        $campos = [
+            'Nombre'=>'required|string|max:100',
+            'ApellidoPaterno'=>'required|string|max:100',
+            'ApellidoMaterno'=>'required|string|max:100',
+            'Email'=>'required|email',
+            'Password"'=>'required|string|max:100',
+            
+        ];
+        $mensaje=[
+            'required'=>'El :attribute es requierido',
+        ];
+
+        $request->validate( $campos, $mensaje);
+
+
         //$DatosEmpleado = request()->all();
         $DatosEmpleado = request()->except('_token');
         Empleado::insert($DatosEmpleado);
-        return response()->json($DatosEmpleado);
+        //return response()->json($DatosEmpleado);
+        return view('Empleado.create');
 
+    }
+
+    public function LoginView()
+    {
+        //
+        //return response()->json($data);
+        return view('Empleado.Login');
+    }
+
+    public function Login(Request $request)
+    {
+        //
+        //return response()->json($data);
+         
+        //$DatosEmpleado = Empleado::where('Email', '=', $Email)->where('Password', '=', $Password)->first();
+        echo (console.log($request));
+        Log::emergency($request);
+        Log::alert($request);
+        Log::debug($request);    
+        //return response()->json($DatosEmpleado);
     }
 
     /**
      * Display the specified resource.
      * Get /Empleados/{Empleados}
      */
-    public function show($Email, $Password)
+    public function show(Request $request)
     {
         //
-        $DatosEmpleado = Empleado::where('Email', '=', $Email)->where('Password', '=', $Password)->first();
+        
+        $DatosEmpleado = Empleado::where('Email', '=', $request->Email)->where('Password', '=', $request->Password)->first();
         return response()->json($DatosEmpleado);
+
     }
 
     /**
@@ -61,8 +100,10 @@ class EmpleadoController extends Controller
     public function edit($id)
     {
         //
-        $DatosEmpleado = Empleado::findORFail($id);
-        return response()->json($DatosEmpleado);
+        $empleado = Empleado::findORFail($id);
+        //return response()->json($DatosEmpleado);
+        return view('Empleado.edit', compact('empleado'));
+        
     }
 
     /**
@@ -72,10 +113,11 @@ class EmpleadoController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $DatosEmpleado = request()->except(['token', 'method']);
+        $DatosEmpleado = request()->except(['_token', '_method']);
         Empleado::where('id', '=', $id)->update($DatosEmpleado);
         $Dataempleado = Empleado::findOrFail($id);
-        return response()->json($Dataempleado);
+        return redirect('Empleado');
+        //return response()->json($Dataempleado);
     }
 
     /**
@@ -86,5 +128,6 @@ class EmpleadoController extends Controller
     {
         //
         Empleado::destroy($id);
+        return redirect('Empleado');
     }
 }

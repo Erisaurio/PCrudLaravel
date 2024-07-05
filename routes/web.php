@@ -15,4 +15,8 @@ Route::get('/empleado', function () {
 Route::get('/empleado/create', [EmpleadoController::class, 'create'] 
 */
 
+Route::get('/empleado/LView', [EmpleadoController::class, 'LoginView']);
+
+Route::post('/empleado/Login', [EmpleadoController::class, 'Login']);
+
 Route::resource('empleado' , EmpleadoController::class);

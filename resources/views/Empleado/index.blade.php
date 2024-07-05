@@ -19,7 +19,20 @@ Empleados
             <td>{{ $empleado->ApellidoPaterno }}</td>
             <td>{{ $empleado->ApellidoMaterno }}</td>
             <td>{{ $empleado->Email }}</td>
-            <td> editar | Borrar</td>
+            <td> 
+
+            <a href="{{ url('/empleado/'.$empleado->id.'/edit') }}">
+                Editar
+            </a>
+
+            <form action="{{ url('/empleado/'.$empleado->id) }}" method="post">
+            @csrf 
+               {{ method_field('DELETE') }}
+                <input type="submit" value="borrar" onclick="return confirm('Quieres borrar?')">
+            
+            </form>
+
+            </td>
         </tr>
         @endforeach
     </tbody>
